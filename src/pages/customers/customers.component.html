@@ -1,0 +1,6 @@
+
+<customer-list (addCustomer)="openAddCustomerModal()"></customer-list>
+
+@if (isModalOpen()) {
+  <add-customer-modal (closeModal)="closeModal()" (customerAdded)="handleCustomerAdded($event)"></add-customer-modal>
+}

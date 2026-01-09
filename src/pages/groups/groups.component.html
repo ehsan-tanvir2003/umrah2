@@ -1,0 +1,45 @@
+
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-gray-800">Group Management</h2>
+    <button (click)="openModal(null)" class="flex items-center justify-center px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700">
+      <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+      Add Group
+    </button>
+  </div>
+
+  <!-- Group Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (group of groups(); track group.id) {
+      <div class="bg-white rounded-lg shadow-md flex flex-col justify-between">
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-gray-800">{{ group.name }}</h3>
+          <p class="text-sm text-gray-500 mt-1 h-10">{{ group.description }}</p>
+          <p class="text-sm text-gray-700 mt-4">Travel Date: <span class="font-semibold">{{ group.travelDate | date:'longDate' }}</span></p>
+          <div class="mt-4 flex items-center text-sm text-gray-600">
+             <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            <span>{{ group.memberIds.length }} members</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 flex justify-end items-center space-x-3">
+            <button (click)="openModal(group)" class="text-sm font-medium text-gray-600 hover:text-gray-900">Edit</button>
+            <button (click)="handleDeleteGroup(group)" class="text-sm font-medium text-red-600 hover:text-red-900">Delete</button>
+            <a [routerLink]="['/groups', group.id]" class="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Manage Group</a>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-span-full text-center py-12 text-gray-500">
+        <p>No groups created yet.</p>
+      </div>
+    }
+  </div>
+</div>
+
+@if (isModalOpen()) {
+  <add-group-modal 
+    [group]="editingGroup()"
+    (closeModal)="closeModal()" 
+    (saveGroup)="handleSaveGroup($event)">
+  </add-group-modal>
+}

@@ -1,0 +1,415 @@
+
+<div class="max-w-6xl mx-auto">
+  <!-- Tabs -->
+  <div class="mb-6 border-b border-gray-200">
+    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+      <button (click)="activeTab.set('profile')" 
+              [class.border-teal-500]="activeTab() === 'profile'"
+              [class.text-teal-600]="activeTab() === 'profile'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Company
+      </button>
+      <button (click)="activeTab.set('app')" 
+              [class.border-teal-500]="activeTab() === 'app'"
+              [class.text-teal-600]="activeTab() === 'app'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Application
+      </button>
+      <button (click)="activeTab.set('users')" 
+              [class.border-teal-500]="activeTab() === 'users'"
+              [class.text-teal-600]="activeTab() === 'users'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Users & Roles
+      </button>
+      <button (click)="activeTab.set('banks')" 
+              [class.border-teal-500]="activeTab() === 'banks'"
+              [class.text-teal-600]="activeTab() === 'banks'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Bank Accounts
+      </button>
+      <button (click)="activeTab.set('suppliers')" 
+              [class.border-teal-500]="activeTab() === 'suppliers'"
+              [class.text-teal-600]="activeTab() === 'suppliers'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Suppliers
+      </button>
+      <button (click)="activeTab.set('countries')" 
+              [class.border-teal-500]="activeTab() === 'countries'"
+              [class.text-teal-600]="activeTab() === 'countries'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Countries
+      </button>
+      <button (click)="activeTab.set('sms')" 
+              [class.border-teal-500]="activeTab() === 'sms'"
+              [class.text-teal-600]="activeTab() === 'sms'"
+              class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        SMS
+      </button>
+    </nav>
+  </div>
+
+  <!-- Tab Content -->
+  @if (activeTab() === 'profile') {
+    <div class="space-y-8">
+      <!-- Company Profile -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b">
+          <h2 class="text-xl font-bold text-gray-800">Company Profile</h2>
+          <p class="text-sm text-gray-500 mt-1">This information will appear on invoices and other documents.</p>
+        </div>
+        <form [formGroup]="companyProfileForm" (ngSubmit)="saveCompanyProfile()">
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700">Agency Name</label>
+              <input type="text" id="name" formControlName="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Contact Email</label>
+              <input type="email" id="email" formControlName="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-700">Contact Phone</label>
+              <input type="text" id="phone" formControlName="phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label for="logoUrl" class="block text-sm font-medium text-gray-700">Logo URL</label>
+              <input type="text" id="logoUrl" formControlName="logoUrl" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="md:col-span-2">
+              <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+              <textarea id="address" formControlName="address" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-gray-50 text-right">
+            <button type="submit" [disabled]="companyProfileForm.pristine" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400">Save Company Profile</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Financial Settings -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b">
+          <h2 class="text-xl font-bold text-gray-800">Financial Settings</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage currency and tax information.</p>
+        </div>
+        <form [formGroup]="financialSettingsForm" (ngSubmit)="saveFinancialSettings()">
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="currency" class="block text-sm font-medium text-gray-700">Currency</label>
+              <input type="text" id="currency" formControlName="currency" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100" readonly>
+            </div>
+            <div>
+              <label for="taxNumber" class="block text-sm font-medium text-gray-700">Tax / Trade License No.</label>
+              <input type="text" id="taxNumber" formControlName="taxNumber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+          </div>
+           <div class="px-6 py-4 bg-gray-50 text-right">
+            <button type="submit" [disabled]="financialSettingsForm.pristine" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400">Save Financial Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (activeTab() === 'app') {
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b">
+          <h2 class="text-xl font-bold text-gray-800">Application Settings</h2>
+          <p class="text-sm text-gray-500 mt-1">Global settings for the application behavior.</p>
+        </div>
+        <form [formGroup]="applicationSettingsForm" (ngSubmit)="saveApplicationSettings()">
+          <div class="p-6">
+            <div>
+              <label for="appBaseUrl" class="block text-sm font-medium text-gray-700">App Base URL</label>
+              <input type="text" id="appBaseUrl" formControlName="appBaseUrl" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+              <p class="mt-2 text-xs text-gray-500">This URL is used for generating links in QR codes and notifications (e.g., https://yourapp.com).</p>
+            </div>
+          </div>
+           <div class="px-6 py-4 bg-gray-50 text-right">
+            <button type="submit" [disabled]="applicationSettingsForm.pristine" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400">Save App Settings</button>
+          </div>
+        </form>
+      </div>
+  }
+  
+  @if (activeTab() === 'users') {
+    <div class="bg-white rounded-lg shadow-md">
+       <div class="p-6 border-b flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800">User Management</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage staff access and roles within the application.</p>
+        </div>
+        <div class="space-x-2">
+            @if(isSuperAdmin()) {
+            <button class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300">Manage Roles</button>
+            <button (click)="openUserModal()" class="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Add New User</button>
+            }
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Login</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(user of users(); track user.id) {
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{user.name}}</div>
+                <div class="text-sm text-gray-500">{{user.email}}</div>
+              </td>
+               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{user.role}}</td>
+               <td class="px-6 py-4 whitespace-nowrap">
+                @if(user.status === 'Active') {
+                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                } @else {
+                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
+                }
+               </td>
+               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{user.lastLogin}}</td>
+               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                 @if(isSuperAdmin()) {
+                 <button (click)="openUserModal(user)" class="text-teal-600 hover:text-teal-900">Edit</button>
+                 <button (click)="handleDeleteUser(user)" class="text-red-600 hover:text-red-900">Delete</button>
+                 }
+               </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+   @if (activeTab() === 'banks') {
+    <div class="bg-white rounded-lg shadow-md">
+       <div class="p-6 border-b flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800">Bank Account Management</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage company bank accounts for financial tracking.</p>
+        </div>
+        <button (click)="openBankAccountModal()" class="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Add New Account</button>
+      </div>
+      <div class="p-6 space-y-4">
+        @for(account of bankAccounts(); track account.id) {
+          <div class="p-4 border rounded-lg grid grid-cols-4 gap-4 items-center">
+            <div>
+              <p class="text-xs text-gray-500">Bank Name</p>
+              <p class="font-semibold text-gray-800">{{account.bankName}}</p>
+            </div>
+             <div>
+              <p class="text-xs text-gray-500">Account Number</p>
+              <p class="font-semibold text-gray-800">{{account.accountNumber}}</p>
+            </div>
+             <div>
+              <p class="text-xs text-gray-500">Branch</p>
+              <p class="font-semibold text-gray-800">{{account.branch}}</p>
+            </div>
+            <div class="text-right space-x-4">
+              <button (click)="openBankAccountModal(account)" class="text-teal-600 hover:text-teal-900 text-sm font-medium">Edit</button>
+              @if(isSuperAdmin()) {
+              <button (click)="handleDeleteBankAccount(account)" class="text-red-600 hover:text-red-900 text-sm font-medium">Delete</button>
+              }
+            </div>
+          </div>
+        } @empty {
+          <p class="text-center text-gray-500 py-8">No bank accounts added yet.</p>
+        }
+      </div>
+    </div>
+  }
+  
+  @if (activeTab() === 'suppliers') {
+     <div class="bg-white rounded-lg shadow-md">
+       <div class="p-6 border-b flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800">Supplier Management</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage hotels, transport providers, and other suppliers.</p>
+        </div>
+        <button (click)="openSupplierModal()" class="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Add Supplier</button>
+      </div>
+       <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(supplier of suppliers(); track supplier.id) {
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{supplier.name}}</div>
+                <div class="text-sm text-gray-500">{{supplier.country}}</div>
+              </td>
+               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{supplier.category}}</td>
+               <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{supplier.contactPerson}}</div>
+                <div class="text-sm text-gray-500">{{supplier.mobile}}</div>
+              </td>
+               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                 <button (click)="openSupplierModal(supplier)" class="text-teal-600 hover:text-teal-900">Edit</button>
+                 @if(isSuperAdmin()){
+                 <button (click)="handleDeleteSupplier(supplier)" class="text-red-600 hover:text-red-900">Delete</button>
+                 }
+               </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+  
+   @if (activeTab() === 'countries') {
+     <div class="bg-white rounded-lg shadow-md">
+       <div class="p-6 border-b flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800">Country List</h2>
+          <p class="text-sm text-gray-500 mt-1">Manage countries for use in addresses and supplier info.</p>
+        </div>
+        <button (click)="openCountryModal()" class="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700">Add Country</button>
+      </div>
+       <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Country Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ISO Code</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            @for(country of countries(); track country.code) {
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{country.name}}</td>
+               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{country.code}}</td>
+               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                 <button (click)="openCountryModal(country)" class="text-teal-600 hover:text-teal-900">Edit</button>
+                 @if(isSuperAdmin()){
+                 <button (click)="handleDeleteCountry(country)" class="text-red-600 hover:text-red-900">Delete</button>
+                 }
+               </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  @if (activeTab() === 'sms') {
+    <div class="space-y-8">
+      <!-- SMS Gateway Configuration -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b">
+          <h2 class="text-xl font-bold text-gray-800">SMS Gateway Configuration</h2>
+          <p class="text-sm text-gray-500 mt-1">Configure your SMS gateway credentials for notifications.</p>
+        </div>
+        <form [formGroup]="gatewaySettingsForm" (ngSubmit)="saveGatewaySettings()">
+          <div class="p-6 space-y-4">
+            <div>
+              <label for="provider" class="block text-sm font-medium text-gray-700">SMS Provider</label>
+              <select id="provider" formControlName="provider" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                <option>Grameenphone</option>
+                <option>Robi</option>
+                <option>Banglalink</option>
+                <option>GreenWeb SMS</option>
+                <option>BulkSMS BD</option>
+                <option>Alpha SMS</option>
+              </select>
+            </div>
+            <div>
+              <label for="apiKey" class="block text-sm font-medium text-gray-700">API Key</label>
+              <input type="password" id="apiKey" formControlName="apiKey" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+              <label for="senderId" class="block text-sm font-medium text-gray-700">Sender ID (Masking)</label>
+              <input type="text" id="senderId" formControlName="senderId" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-gray-50 text-right">
+            <button type="submit" [disabled]="gatewaySettingsForm.pristine" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 disabled:bg-gray-400">Save Gateway Settings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SMS Template Editor -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b">
+          <h2 class="text-xl font-bold text-gray-800">SMS Template Editor</h2>
+          <p class="text-sm text-gray-500 mt-1">Create and manage templates for sending SMS to customers.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3">
+          <div class="md:col-span-1 border-r">
+            <div class="p-4">
+              <button (click)="selectTemplate(null)" class="w-full text-left mb-2 px-3 py-2 text-sm font-medium rounded-md bg-teal-600 text-white hover:bg-teal-700">+ Create New Template</button>
+              <ul>
+                @for(template of templates(); track template.id) {
+                  <li (click)="selectTemplate(template)" [class.bg-gray-200]="selectedTemplate()?.id === template.id" class="cursor-pointer p-3 rounded-md hover:bg-gray-100">
+                    <p class="font-semibold text-gray-800">{{template.name}}</p>
+                    <p class="text-xs text-gray-500 truncate">{{template.content}}</p>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+          <div class="md:col-span-2 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ selectedTemplate() ? 'Edit Template' : 'Create New Template' }}</h3>
+            <form [formGroup]="templateForm" (ngSubmit)="saveTemplate()">
+              <div class="space-y-4">
+                <div>
+                  <label for="templateName" class="block text-sm font-medium text-gray-700">Template Name</label>
+                  <input type="text" id="templateName" formControlName="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                  <label for="templateContent" class="block text-sm font-medium text-gray-700">Template Content</label>
+                  <textarea id="templateContent" formControlName="content" rows="6" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                  <p class="mt-2 text-xs text-gray-500">
+                    Placeholders: <code class="bg-gray-200 p-1 rounded">{{ '{{customerName}}' }}</code>, <code class="bg-gray-200 p-1 rounded">{{ '{{amount}}' }}</code>, <code class="bg-gray-200 p-1 rounded">{{ '{{package}}' }}</code>, <code class="bg-gray-200 p-1 rounded">{{ '{{total}}' }}</code>, <code class="bg-gray-200 p-1 rounded">{{ '{{paid}}' }}</code>, <code class="bg-gray-200 p-1 rounded">{{ '{{due}}' }}</code>
+                  </p>
+                </div>
+              </div>
+              <div class="mt-6 flex justify-between">
+                <div>
+                  @if(selectedTemplate() && isSuperAdmin()) {
+                    <button type="button" (click)="deleteTemplate()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Delete</button>
+                  }
+                </div>
+                <div class="space-x-2">
+                  @if(selectedTemplate()) {
+                    <button type="button" (click)="selectTemplate(null)" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Cancel</button>
+                  }
+                  <button type="submit" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700">Save Template</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Modals -->
+@if(isUserModalOpen()){
+  <add-user-modal [user]="editingUser()" (closeModal)="closeUserModal()" (saveUser)="handleSaveUser($event)"></add-user-modal>
+}
+@if(isBankAccountModalOpen()){
+  <add-bank-account-modal [account]="editingBankAccount()" (closeModal)="closeBankAccountModal()" (saveAccount)="handleSaveBankAccount($event)"></add-bank-account-modal>
+}
+@if(isSupplierModalOpen()){
+    <add-supplier-modal [supplier]="editingSupplier()" (closeModal)="closeSupplierModal()" (saveSupplier)="handleSaveSupplier($event)"></add-supplier-modal>
+}
+@if(isCountryModalOpen()){
+    <add-country-modal [country]="editingCountry()" (closeModal)="closeCountryModal()" (saveCountry)="handleSaveCountry($event)"></add-country-modal>
+}

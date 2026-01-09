@@ -1,0 +1,30 @@
+
+<div class="space-y-6">
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h4 class="text-sm font-medium text-gray-500">Total Revenue</h4>
+      <p class="text-3xl font-bold text-gray-800 mt-1">৳{{ totalRevenue().toLocaleString('en-BD') }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h4 class="text-sm font-medium text-gray-500">Total Due</h4>
+      <p class="text-3xl font-bold text-red-600 mt-1">৳{{ totalDue().toLocaleString('en-BD') }}</p>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h4 class="text-sm font-medium text-gray-500">Total Bookings</h4>
+      <p class="text-3xl font-bold text-gray-800 mt-1">{{ totalBookings() }}</p>
+    </div>
+  </div>
+
+  <!-- Bookings List -->
+  <booking-list (addPayment)="openAddPaymentModal($event)"></booking-list>
+</div>
+
+
+@if (isModalOpen() && selectedBooking()) {
+  <add-payment-modal 
+    [booking]="selectedBooking()!"
+    (closeModal)="closeModal()" 
+    (paymentAdded)="handlePaymentAdded($event)">
+  </add-payment-modal>
+}

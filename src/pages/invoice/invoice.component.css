@@ -1,0 +1,23 @@
+
+@media print {
+  body {
+    background-color: #fff;
+  }
+  app-root > div {
+    display: none; /* Hide the main app layout (sidebar, header) */
+  }
+  app-invoice {
+    display: block !important; /* Ensure the invoice component itself is visible */
+  }
+  #invoice-container {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+  }
+  .no-print {
+    display: none;
+  }
+}

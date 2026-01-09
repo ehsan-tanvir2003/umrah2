@@ -1,0 +1,6 @@
+
+<package-list (addPackage)="openAddPackageModal()"></package-list>
+
+@if (isModalOpen()) {
+  <add-package-modal (closeModal)="closeModal()" (packageAdded)="handlePackageAdded($event)"></add-package-modal>
+}

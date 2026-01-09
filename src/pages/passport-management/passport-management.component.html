@@ -1,0 +1,56 @@
+
+<div class="bg-white rounded-lg shadow">
+  <!-- Header -->
+  <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+    <h2 class="text-lg font-semibold text-gray-800">Passport Management</h2>
+    <div class="flex items-center space-x-4 text-sm">
+        <div class="flex items-center"><span class="h-3 w-3 rounded-full bg-red-500 mr-2"></span>Expired</div>
+        <div class="flex items-center"><span class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></span>Expiring Soon</div>
+        <div class="flex items-center"><span class="h-3 w-3 rounded-full bg-green-500 mr-2"></span>Valid</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer Name</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passport No.</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue Date</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        @for (p of passports(); track p.customerId) {
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ p.customerName }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ p.passportNumber }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ p.issueDate }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium" 
+                [class.text-red-600]="isExpired(p.expiryDate)"
+                [class.text-yellow-600]="isExpiringSoon(p.expiryDate)">
+                {{ p.expiryDate }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                @if (isExpired(p.expiryDate)) {
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Expired</span>
+                } @else if (isExpiringSoon(p.expiryDate)) {
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Expiring Soon</span>
+                } @else {
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Valid</span>
+                }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+              <p>No passports found.</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

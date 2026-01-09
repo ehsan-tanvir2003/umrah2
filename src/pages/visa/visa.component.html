@@ -1,0 +1,6 @@
+
+<visa-list (addVisa)="openAddVisaModal()"></visa-list>
+
+@if (isModalOpen()) {
+  <add-visa-modal (closeModal)="closeModal()" (visaAdded)="handleVisaAdded($event)"></add-visa-modal>
+}
