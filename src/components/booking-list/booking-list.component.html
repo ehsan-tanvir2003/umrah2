@@ -1,0 +1,42 @@
+
+<div class="bg-white rounded-lg shadow">
+  <div class="p-4 border-b border-gray-200">
+    <h2 class="text-lg font-semibold text-gray-800">Bookings & Payments</h2>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer Name</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Package</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Paid Amount</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Amount</th>
+          <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        @for (booking of bookingsWithPayment(); track booking.id) {
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ booking.customerName }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ booking.packageName }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">৳{{ booking.totalAmount.toLocaleString('en-BD') }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-semibold">৳{{ booking.paidAmount.toLocaleString('en-BD') }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold" [class.text-red-600]="booking.dueAmount > 0">
+              ৳{{ booking.dueAmount.toLocaleString('en-BD') }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button (click)="onAddPayment(booking)" class="text-teal-600 hover:text-teal-900">Add Payment</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+              <p>No bookings found.</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

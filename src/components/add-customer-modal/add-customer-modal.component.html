@@ -1,0 +1,169 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center" (click)="onBackdropClick($event)">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 class="text-xl font-semibold text-gray-800">Add New Customer</h3>
+      <button (click)="onClose()" class="text-gray-400 hover:text-gray-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-6 overflow-y-auto">
+      <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        
+        <!-- AI Data Import Section -->
+        <div class="mb-6 p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
+          <h4 class="text-lg font-semibold text-gray-700 mb-3">AI Data Import</h4>
+          <p class="text-sm text-gray-500 mb-4">Paste customer details from an email or message, and our AI will attempt to fill out the form for you.</p>
+          <div class="mb-4">
+            <textarea 
+              [formControl]="aiParseControl"
+              rows="5"
+              class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              placeholder="e.g., Customer name is Abdur Rahim, passport B87654321, mobile 01812345678. DOB is 15 May 1985..."
+            ></textarea>
+          </div>
+          <div class="flex items-center">
+            <button (click)="onParseWithAi()" [disabled]="isParsingWithAi() || isScanning() !== null" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">
+              @if(isParsingWithAi()) {
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Parsing...</span>
+              } @else {
+                <svg class="w-5 h-5 -ml-1 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 16.5V21m3.75-18v1.5M12 8.25h.01M16.5 12h.01M12 15.75h.01M16.5 15.75h.01M16.5 8.25h.01M8.25 15.75h.01M8.25 12h.01" />
+                </svg>
+                <span>Parse with AI</span>
+              }
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Scan Section -->
+        <div class="mb-6 p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
+          <h4 class="text-lg font-semibold text-gray-700 mb-3">Quick Scan Accelerator</h4>
+          <p class="text-sm text-gray-500 mb-4">Automatically fill the form by scanning a document. This is a simulation using mock data.</p>
+          <div class="flex items-center space-x-4">
+            <button (click)="onScanPassport()" [disabled]="isScanning() !== null || isParsingWithAi()" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+              @if(isScanning() === 'passport') {
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Scanning...</span>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm10.5 5.5a.5.5 0 000-1h-7a.5.5 0 000 1h7zM14.5 9.5a.5.5 0 000-1h-7a.5.5 0 000 1h7zM11.5 13.5a.5.5 0 000-1h-1a.5.5 0 000 1h1z" clip-rule="evenodd" />
+                </svg>
+                <span>Scan Passport</span>
+              }
+            </button>
+            <button (click)="onScanNid()" [disabled]="isScanning() !== null || isParsingWithAi()" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed">
+              @if(isScanning() === 'nid') {
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Scanning...</span>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                  <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm3 1a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+                <span>Scan NID</span>
+              }
+            </button>
+          </div>
+        </div>
+        
+        <!-- Personal Information Section -->
+        <div class="mb-6">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Personal Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name (as per Passport)</label>
+              <input type="text" id="fullName" formControlName="fullName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name</label>
+              <input type="text" id="fatherName" formControlName="fatherName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="motherName" class="block text-sm font-medium text-gray-700">Mother's Name</label>
+              <input type="text" id="motherName" formControlName="motherName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="dateOfBirth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+              <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+              <select id="gender" formControlName="gender" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+             <div>
+              <label for="nidNumber" class="block text-sm font-medium text-gray-700">NID Number</label>
+              <input type="text" id="nidNumber" formControlName="nidNumber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+          </div>
+        </div>
+
+        <!-- Passport Information Section -->
+        <div class="mb-6">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Passport Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="passportNumber" class="block text-sm font-medium text-gray-700">Passport Number</label>
+              <input type="text" id="passportNumber" formControlName="passportNumber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="passportIssueDate" class="block text-sm font-medium text-gray-700">Passport Issue Date</label>
+              <input type="date" id="passportIssueDate" formControlName="passportIssueDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="passportExpiryDate" class="block text-sm font-medium text-gray-700">Passport Expiry Date</label>
+              <input type="date" id="passportExpiryDate" formControlName="passportExpiryDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="mb-6">
+          <h4 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Contact Information</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label for="mobileNumber" class="block text-sm font-medium text-gray-700">Mobile Number</label>
+              <input type="tel" id="mobileNumber" formControlName="mobileNumber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="whatsappNumber" class="block text-sm font-medium text-gray-700">WhatsApp Number</label>
+              <input type="tel" id="whatsappNumber" formControlName="whatsappNumber" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+              <input type="email" id="email" formControlName="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="flex items-center justify-end p-4 border-t bg-gray-50">
+      <button (click)="onClose()" type="button" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        Cancel
+      </button>
+      <button (click)="onSubmit()" type="submit" class="ml-3 px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+        Save Customer
+      </button>
+    </div>
+  </div>
+</div>

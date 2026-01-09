@@ -1,0 +1,7 @@
+{
+  "name": "UmrahFlow - Travel Agency Management",
+  "description": "A comprehensive management software for Omrah travel agencies in Bangladesh to manage customers, packages, visas, payments, and more. This applet focuses on the core customer management module.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

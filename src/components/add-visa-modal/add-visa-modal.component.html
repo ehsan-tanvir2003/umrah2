@@ -1,0 +1,53 @@
+
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center" (click)="onBackdropClick($event)">
+  <div class="bg-white rounded-lg shadow-xl w-full max-w-lg" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <h3 class="text-xl font-semibold text-gray-800">New Visa Application</h3>
+      <button (click)="onClose()" class="text-gray-400 hover:text-gray-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <form [formGroup]="visaForm" (ngSubmit)="onSubmit()">
+      <div class="p-6 space-y-4">
+        <div>
+          <label for="customerId" class="block text-sm font-medium text-gray-700">Customer</label>
+          <select id="customerId" formControlName="customerId" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            <option value="" disabled>Select a customer</option>
+            @for(customer of customers(); track customer.id) {
+              <option [value]="customer.id">{{ customer.fullName }} - {{ customer.passportNumber }}</option>
+            }
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="visaFee" class="block text-sm font-medium text-gray-700">Visa Fee (BDT)</label>
+                <input type="number" id="visaFee" formControlName="visaFee" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+            </div>
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select id="status" formControlName="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+                    <option>Pending</option>
+                    <option>Submitted</option>
+                    <option>Approved</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label for="submissionDate" class="block text-sm font-medium text-gray-700">Submission Date</label>
+            <input type="date" id="submissionDate" formControlName="submissionDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm">
+        </div>
+      </div>
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end p-4 border-t bg-gray-50">
+        <button (click)="onClose()" type="button" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">Cancel</button>
+        <button type="submit" class="ml-3 px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700">Save Application</button>
+      </div>
+    </form>
+  </div>
+</div>
